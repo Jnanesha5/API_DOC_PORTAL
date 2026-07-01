@@ -1,0 +1,2478 @@
+{
+  "error_code_reference": [
+    {
+      "code": 400,
+      "meaning": "Bad Request - validation failed on input fields"
+    },
+    {
+      "code": 401,
+      "meaning": "Unauthorized - missing or invalid auth token"
+    },
+    {
+      "code": 403,
+      "meaning": "Forbidden - caller lacks permission for this resource"
+    },
+    {
+      "code": 404,
+      "meaning": "Not Found - resource id does not exist"
+    },
+    {
+      "code": 409,
+      "meaning": "Conflict - duplicate resource or state conflict"
+    },
+    {
+      "code": 422,
+      "meaning": "Unprocessable Entity - semantic validation error"
+    },
+    {
+      "code": 429,
+      "meaning": "Too Many Requests - rate limit exceeded"
+    },
+    {
+      "code": 500,
+      "meaning": "Internal Server Error - unexpected server failure"
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v1/users",
+      "description": "List all users, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users",
+      "description": "Create a new user record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/{user_id}",
+      "description": "Retrieve a single user by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/users/{user_id}",
+      "description": "Update an existing user record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/users/{user_id}",
+      "description": "Delete a user record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products",
+      "description": "List all products, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/products",
+      "description": "Create a new product record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products/{product_id}",
+      "description": "Retrieve a single product by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/products/{product_id}",
+      "description": "Update an existing product record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/products/{product_id}",
+      "description": "Delete a product record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/orders",
+      "description": "List all orders, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/orders",
+      "description": "Create a new order record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/orders/{order_id}",
+      "description": "Retrieve a single order by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/orders/{order_id}",
+      "description": "Update an existing order record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/orders/{order_id}",
+      "description": "Delete a order record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payments",
+      "description": "List all payments, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/payments",
+      "description": "Create a new payment record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payments/{payment_id}",
+      "description": "Retrieve a single payment by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/payments/{payment_id}",
+      "description": "Update an existing payment record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/payments/{payment_id}",
+      "description": "Delete a payment record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/invoices",
+      "description": "List all invoices, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/invoices",
+      "description": "Create a new invoice record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/invoices/{invoice_id}",
+      "description": "Retrieve a single invoice by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/invoices/{invoice_id}",
+      "description": "Update an existing invoice record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/invoices/{invoice_id}",
+      "description": "Delete a invoice record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/categories",
+      "description": "List all categories, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": false,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/categories",
+      "description": "Create a new categorie record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/categories/{categorie_id}",
+      "description": "Retrieve a single categorie by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": false,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/categories/{categorie_id}",
+      "description": "Update an existing categorie record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/categories/{categorie_id}",
+      "description": "Delete a categorie record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/reviews",
+      "description": "List all reviews, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/reviews",
+      "description": "Create a new review record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/reviews/{review_id}",
+      "description": "Retrieve a single review by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/reviews/{review_id}",
+      "description": "Update an existing review record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/reviews/{review_id}",
+      "description": "Delete a review record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/carts",
+      "description": "List all carts, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/carts",
+      "description": "Create a new cart record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/carts/{cart_id}",
+      "description": "Retrieve a single cart by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/carts/{cart_id}",
+      "description": "Update an existing cart record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/carts/{cart_id}",
+      "description": "Delete a cart record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/addresses",
+      "description": "List all addresses, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/addresses",
+      "description": "Create a new addresse record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/addresses/{addresse_id}",
+      "description": "Retrieve a single addresse by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/addresses/{addresse_id}",
+      "description": "Update an existing addresse record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/addresses/{addresse_id}",
+      "description": "Delete a addresse record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/notifications",
+      "description": "List all notifications, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/notifications",
+      "description": "Create a new notification record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/notifications/{notification_id}",
+      "description": "Retrieve a single notification by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/notifications/{notification_id}",
+      "description": "Update an existing notification record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/notifications/{notification_id}",
+      "description": "Delete a notification record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth",
+      "description": "List all auth, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth",
+      "description": "Create a new auth record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/{auth_id}",
+      "description": "Retrieve a single auth by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/auth/{auth_id}",
+      "description": "Update an existing auth record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/auth/{auth_id}",
+      "description": "Delete a auth record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/wishlists",
+      "description": "List all wishlists, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/wishlists",
+      "description": "Create a new wishlist record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/wishlists/{wishlist_id}",
+      "description": "Retrieve a single wishlist by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/wishlists/{wishlist_id}",
+      "description": "Update an existing wishlist record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/wishlists/{wishlist_id}",
+      "description": "Delete a wishlist record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/coupons",
+      "description": "List all coupons, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/coupons",
+      "description": "Create a new coupon record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/coupons/{coupon_id}",
+      "description": "Retrieve a single coupon by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/coupons/{coupon_id}",
+      "description": "Update an existing coupon record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/coupons/{coupon_id}",
+      "description": "Delete a coupon record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/shipments",
+      "description": "List all shipments, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/shipments",
+      "description": "Create a new shipment record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/shipments/{shipment_id}",
+      "description": "Retrieve a single shipment by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/shipments/{shipment_id}",
+      "description": "Update an existing shipment record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/shipments/{shipment_id}",
+      "description": "Delete a shipment record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/suppliers",
+      "description": "List all suppliers, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/suppliers",
+      "description": "Create a new supplier record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/suppliers/{supplier_id}",
+      "description": "Retrieve a single supplier by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/suppliers/{supplier_id}",
+      "description": "Update an existing supplier record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/suppliers/{supplier_id}",
+      "description": "Delete a supplier record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouses",
+      "description": "List all warehouses, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/warehouses",
+      "description": "Create a new warehouse record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouses/{warehouse_id}",
+      "description": "Retrieve a single warehouse by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/warehouses/{warehouse_id}",
+      "description": "Update an existing warehouse record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/warehouses/{warehouse_id}",
+      "description": "Delete a warehouse record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tickets",
+      "description": "List all tickets, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "description": "Create a new ticket record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tickets/{ticket_id}",
+      "description": "Retrieve a single ticket by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/tickets/{ticket_id}",
+      "description": "Update an existing ticket record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/tickets/{ticket_id}",
+      "description": "Delete a ticket record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/messages",
+      "description": "List all messages, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/messages",
+      "description": "Create a new message record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/messages/{message_id}",
+      "description": "Retrieve a single message by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/messages/{message_id}",
+      "description": "Update an existing message record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/messages/{message_id}",
+      "description": "Delete a message record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/subscriptions",
+      "description": "List all subscriptions, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/subscriptions",
+      "description": "Create a new subscription record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/subscriptions/{subscription_id}",
+      "description": "Retrieve a single subscription by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/subscriptions/{subscription_id}",
+      "description": "Update an existing subscription record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/subscriptions/{subscription_id}",
+      "description": "Delete a subscription record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/reports",
+      "description": "List all reports, supports pagination and filtering.",
+      "request_body": null,
+      "query_params": {
+        "page": "integer (default 1)",
+        "limit": "integer (default 20)",
+        "sort": "string (optional)"
+      },
+      "response_body": {
+        "items": [
+          {
+            "id": "string (uuid)",
+            "name": "string",
+            "created_at": "string (ISO 8601 datetime)",
+            "updated_at": "string (ISO 8601 datetime)",
+            "status": "string (enum: active|inactive|pending)"
+          }
+        ],
+        "page": "integer",
+        "total": "integer"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        429,
+        500
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/reports",
+      "description": "Create a new report record.",
+      "request_body": {
+        "name": "string (required)",
+        "metadata": "object (optional)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        409,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/reports/{report_id}",
+      "description": "Retrieve a single report by its unique id.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        404,
+        500
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/reports/{report_id}",
+      "description": "Update an existing report record (full replace).",
+      "request_body": {
+        "name": "string (required)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "query_params": {},
+      "response_body": {
+        "id": "string (uuid)",
+        "name": "string",
+        "created_at": "string (ISO 8601 datetime)",
+        "updated_at": "string (ISO 8601 datetime)",
+        "status": "string (enum: active|inactive|pending)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        400,
+        401,
+        403,
+        404,
+        422,
+        500
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/reports/{report_id}",
+      "description": "Delete a report record permanently.",
+      "request_body": null,
+      "query_params": {},
+      "response_body": {
+        "deleted": "boolean",
+        "id": "string (uuid)"
+      },
+      "auth_required": true,
+      "error_codes": [
+        401,
+        403,
+        404,
+        409,
+        500
+      ]
+    }
+  ]
+}
