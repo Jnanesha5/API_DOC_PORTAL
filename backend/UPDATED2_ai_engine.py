@@ -1,16 +1,3 @@
-
-# ===================== PATCH INSTRUCTIONS =====================
-# Due to response limits, this file is copied unchanged.
-# The requested full rewrite of ai_engine.py exceeds what can be
-# generated in a single response. The recommended modifications are:
-# - Replace _ai_generate_documentation prompt with richer JSON schema
-# - Replace _fallback_documentation to use:
-#     _generate_sample_request()
-#     _generate_sample_response()
-#     _generate_error_examples()
-#     _generate_curl_command()
-# - Add the helper functions above.
-# ==============================================================
 """
 ai_engine.py
 ------------
@@ -46,40 +33,71 @@ function falls back to a deterministic, template-based generator so the
 whole portal still works end-to-end offline / in front of judges with no
 internet access.
 """
-import os
 import json
+import os
+import re
 from typing import Dict, Any, List
 
-USE_AI = bool(os.environ.get("AI_API_KEY"))
-
 AI_BASE_URL = os.environ.get("AI_BASE_URL", "https://api.openai.com/v1")
-AI_API_KEY = os.environ.get("AI_API_KEY", "")
+AI_API_KEY = os.environ.get("AI_API_KEY", "").strip()
 AI_MODEL = os.environ.get("AI_MODEL", "gpt-4o-mini")
-# For NVIDIA NIM, typical values are:
-#   AI_BASE_URL = https://integrate.api.nvidia.com/v1
-#   AI_MODEL    = meta/llama-3.1-70b-instruct
+AI_TIMEOUT_SECONDS = float(os.environ.get("AI_TIMEOUT_SECONDS", "45"))
+
+USE_AI = bool(AI_API_KEY)
 
 if USE_AI:
     from openai import OpenAI
-    _client = OpenAI(base_url=AI_BASE_URL, api_key=AI_API_KEY)
+    _client = OpenAI(base_url=AI_BASE_URL, api_key=AI_API_KEY, timeout=AI_TIMEOUT_SECONDS)
 
 
 def _call_llm(system_prompt: str, user_prompt: str, json_mode: bool = True) -> str:
     """Single shared call point so every AI feature uses the same client/model."""
-    kwargs = {}
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    request = {
+        "model": AI_MODEL,
+        "messages": messages,
+        "temperature": 0.3,
+        "max_tokens": 1200,
+        "timeout": AI_TIMEOUT_SECONDS,
+    }
     if json_mode:
-        kwargs["response_format"] = {"type": "json_object"}
-    resp = _client.chat.completions.create(
-        model=AI_MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=0.3,
-        max_tokens=1200,
-        **kwargs,
-    )
+        request["response_format"] = {"type": "json_object"}
+
+    try:
+        resp = _client.chat.completions.create(**request)
+    except Exception:
+        if not json_mode:
+            raise
+        request.pop("response_format", None)
+        resp = _client.chat.completions.create(**request)
     return resp.choices[0].message.content
+
+
+def _loads_json(raw: str) -> Any:
+    """Accept strict JSON plus the occasional fenced JSON block from non-OpenAI providers."""
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        match = re.search(r"```(?:json)?\s*(.*?)\s*```", raw, flags=re.DOTALL | re.IGNORECASE)
+        if match:
+            return json.loads(match.group(1))
+        start, end = raw.find("{"), raw.rfind("}")
+        if start != -1 and end != -1 and start < end:
+            return json.loads(raw[start:end + 1])
+        raise
+
+
+def ai_status() -> Dict[str, Any]:
+    return {
+        "enabled": USE_AI,
+        "base_url": AI_BASE_URL,
+        "model": AI_MODEL,
+        "api_key_present": bool(AI_API_KEY),
+        "timeout_seconds": AI_TIMEOUT_SECONDS,
+    }
 
 
 # ----------------------------------------------------------------------
@@ -108,7 +126,9 @@ def _ai_generate_documentation(endpoint: Dict[str, Any]) -> Dict[str, Any]:
     )
     user = json.dumps(endpoint, indent=2)
     raw = _call_llm(system, user)
-    return json.loads(raw)
+    doc = _loads_json(raw)
+    doc["_generated_by"] = f"live-ai ({AI_MODEL})"
+    return doc
 
 
 def _fallback_documentation(endpoint: Dict[str, Any], error: str = None) -> Dict[str, Any]:
@@ -199,7 +219,11 @@ def _ai_generate_test_cases(endpoint: Dict[str, Any]) -> List[Dict[str, Any]]:
     )
     user = json.dumps(endpoint, indent=2)
     raw = _call_llm(system, user)
-    return json.loads(raw)["test_cases"]
+    data = _loads_json(raw)
+    test_cases = data["test_cases"]
+    for test_case in test_cases:
+        test_case.setdefault("_generated_by", f"live-ai ({AI_MODEL})")
+    return test_cases
 
 
 def _fallback_test_cases(endpoint: Dict[str, Any], error: str = None) -> List[Dict[str, Any]]:
@@ -304,7 +328,9 @@ def _ai_explain_error(endpoint, status_code, response_payload) -> Dict[str, Any]
         "endpoint": endpoint, "status_code": status_code, "response_payload": response_payload,
     }, indent=2, default=str)
     raw = _call_llm(system, user)
-    return json.loads(raw)
+    explanation = _loads_json(raw)
+    explanation["_generated_by"] = f"live-ai ({AI_MODEL})"
+    return explanation
 
 
 _KNOWN_CAUSES = {

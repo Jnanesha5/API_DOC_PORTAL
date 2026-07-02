@@ -13,6 +13,7 @@ import requests
 import streamlit as st
 
 BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
+AI_REQUEST_TIMEOUT = int(os.environ.get("AI_REQUEST_TIMEOUT", "60"))
 
 st.set_page_config(page_title="AI API Doc & Testing Portal", layout="wide")
 
@@ -22,6 +23,15 @@ if "endpoints" not in st.session_state:
     st.session_state.endpoints = []
 
 SID = st.session_state.session_id
+
+
+def post_ai(path, payload):
+    try:
+        return requests.post(f"{BACKEND_URL}{path}", json=payload, timeout=AI_REQUEST_TIMEOUT), None
+    except requests.exceptions.Timeout:
+        return None, f"The AI provider took more than {AI_REQUEST_TIMEOUT} seconds. Try a faster model or increase AI_REQUEST_TIMEOUT."
+    except requests.exceptions.RequestException as exc:
+        return None, f"Could not reach the backend AI route: {exc}"
 
 st.title("🧩 AI-Powered API Documentation & Testing Portal")
 st.caption(
@@ -33,7 +43,14 @@ st.caption(
 try:
     health = requests.get(f"{BACKEND_URL}/health", timeout=3).json()
     ai_on = health.get("ai_enabled")
-    st.sidebar.success(f"Backend connected ✅  |  AI mode: {'LIVE (LLM)' if ai_on else 'TEMPLATE FALLBACK (no API key set)'}")
+    ai = health.get("ai") or {}
+    if ai_on:
+        st.sidebar.success("Backend connected ✅  |  AI mode: LIVE (LLM)")
+        st.sidebar.caption(f"Model: {ai.get('model', 'unknown')}")
+        st.sidebar.caption(f"Base URL: {ai.get('base_url', 'unknown')}")
+    else:
+        st.sidebar.warning("Backend connected ✅  |  AI mode: TEMPLATE FALLBACK")
+        st.sidebar.caption("Set AI_API_KEY before starting the backend to enable live AI.")
 except Exception:
     st.sidebar.error("⚠️ Backend not reachable at " + BACKEND_URL + ". Start it with `uvicorn backend.main:app --reload`.")
     st.stop()
@@ -111,7 +128,10 @@ action_tabs = st.tabs(["📄 AI Documentation", "🧪 AI Test Cases", "🚀 Try 
 with action_tabs[0]:
     if st.button("Generate documentation", key="gen_docs"):
         with st.spinner("Generating documentation..."):
-            r = requests.post(f"{BACKEND_URL}/generate-docs", json={"session_id": SID, "endpoint_index": idx})
+            r, request_error = post_ai("/generate-docs", {"session_id": SID, "endpoint_index": idx})
+        if request_error:
+            st.error(request_error)
+            st.stop()
         if r.ok:
             doc = r.json()["documentation"]
             st.markdown(f"### {doc.get('summary', '')}")
@@ -143,7 +163,10 @@ with action_tabs[0]:
 with action_tabs[1]:
     if st.button("Generate test cases", key="gen_tests"):
         with st.spinner("Generating test cases..."):
-            r = requests.post(f"{BACKEND_URL}/generate-tests", json={"session_id": SID, "endpoint_index": idx})
+            r, request_error = post_ai("/generate-tests", {"session_id": SID, "endpoint_index": idx})
+        if request_error:
+            st.error(request_error)
+            st.stop()
         if r.ok:
             tests = r.json()["test_cases"]
             st.success(f"Generated {len(tests)} test case(s) — copy these into your test suite.")
@@ -156,6 +179,8 @@ with action_tabs[1]:
                     st.write(t.get("expected_response_shape"))
                     st.markdown("**Pytest snippet:**")
                     st.code(t.get("pytest_snippet", ""), language="python")
+                    if t.get("_generated_by"):
+                        st.caption(f"Source: {t['_generated_by']}")
         else:
             st.error(r.text)
 
@@ -197,6 +222,8 @@ with action_tabs[2]:
                     st.write(exp.get("plain_english_explanation"))
                     st.markdown(f"**Suggested fix:** {exp.get('suggested_fix')}")
                     st.markdown(f"**Severity:** `{exp.get('severity')}`")
+                    if exp.get("_generated_by"):
+                        st.caption(f"Source: {exp['_generated_by']}")
             else:
                 st.error(r.text)
         elif not base_url:
@@ -213,17 +240,28 @@ with action_tabs[3]:
         except json.JSONDecodeError:
             payload = payload_raw
         with st.spinner("Analyzing..."):
-            r = requests.post(f"{BACKEND_URL}/explain-error", json={
-                "endpoint": endpoint, "status_code": int(status_code), "response_payload": payload,
+            r, request_error = post_ai("/explain-error", {
+                "endpoint": endpoint,
+                "status_code": int(status_code),
+                "response_payload": payload,
             })
+        if request_error:
+            st.error(request_error)
+            st.stop()
         if r.ok:
             exp = r.json()["explanation"]
             st.markdown(f"**Likely cause:** {exp.get('likely_cause')}")
             st.write(exp.get("plain_english_explanation"))
             st.markdown(f"**Suggested fix:** {exp.get('suggested_fix')}")
             st.markdown(f"**Severity:** `{exp.get('severity')}`")
+            if exp.get("_generated_by"):
+                st.caption(f"Source: {exp['_generated_by']}")
         else:
             st.error(r.text)
 
 st.divider()
 st.caption("Session ID: " + SID + "  |  Data resets when the backend restarts (in-memory store).")
+
+
+# ================= UI Improvements Suggestions Implemented Placeholder =================
+# Add st.metric dashboard, sidebar nav, custom CSS, etc.

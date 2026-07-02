@@ -21,7 +21,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from . import parser as ep_parser
-from . import UPDATED_ai_engine
+from . import UPDATED2_ai_engine
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 SAMPLE_DATA_PATH = os.path.join(APP_DIR, "..", "data", "endpoints.json")
@@ -74,7 +74,7 @@ def _get_session(session_id: str) -> List[Dict[str, Any]]:
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "ai_enabled": UPDATED_ai_engine.USE_AI}
+    return {"status": "ok", "ai_enabled": UPDATED2_ai_engine.USE_AI, "ai": UPDATED2_ai_engine.ai_status()}
 
 
 @app.post("/upload")
@@ -121,7 +121,7 @@ def generate_docs(ref: EndpointRef):
     endpoints = _get_session(ref.session_id)
     if not (0 <= ref.endpoint_index < len(endpoints)):
         raise HTTPException(400, "endpoint_index out of range")
-    doc = UPDATED_ai_engine.generate_documentation(endpoints[ref.endpoint_index])
+    doc = UPDATED2_ai_engine.generate_documentation(endpoints[ref.endpoint_index])
     return {"documentation": doc}
 
 
@@ -130,13 +130,13 @@ def generate_tests(ref: EndpointRef):
     endpoints = _get_session(ref.session_id)
     if not (0 <= ref.endpoint_index < len(endpoints)):
         raise HTTPException(400, "endpoint_index out of range")
-    tests = UPDATED_ai_engine.generate_test_cases(endpoints[ref.endpoint_index])
+    tests = UPDATED2_ai_engine.generate_test_cases(endpoints[ref.endpoint_index])
     return {"test_cases": tests}
 
 
 @app.post("/explain-error")
 def explain_error(payload: ExplainErrorInput):
-    explanation = UPDATED_ai_engine.explain_error(payload.endpoint, payload.status_code, payload.response_payload)
+    explanation = UPDATED2_ai_engine.explain_error(payload.endpoint, payload.status_code, payload.response_payload)
     return {"explanation": explanation}
 
 
@@ -158,7 +158,7 @@ async def try_it(payload: TryItInput):
         return {
             "ok": False,
             "network_error": str(e),
-            "ai_explanation": UPDATED_ai_engine.explain_error(
+            "ai_explanation": UPDATED2_ai_engine.explain_error(
                 payload.endpoint or {"method": payload.method, "path": payload.path},
                 0, {"error": "network_error", "detail": str(e)},
             ),
@@ -177,7 +177,7 @@ async def try_it(payload: TryItInput):
     }
 
     if resp.status_code >= 400:
-        result["ai_explanation"] = UPDATED_ai_engine.explain_error(
+        result["ai_explanation"] = UPDATED2_ai_engine.explain_error(
             payload.endpoint or {"method": payload.method, "path": payload.path},
             resp.status_code, body,
         )
